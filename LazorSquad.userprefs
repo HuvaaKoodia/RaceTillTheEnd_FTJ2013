@@ -1,0 +1,16 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\PathLineMain.cs">
+    <Files>
+      <File FileName="Assets\Game\GameController.cs" Line="70" Column="47" />
+      <File FileName="Assets\Game\UnitMain.cs" Line="13" Column="3" />
+      <File FileName="Assets\Engine\NewScripts\FollowTarget.cs" Line="19" Column="19" />
+      <File FileName="Assets\PathNodeMain.cs" Line="25" Column="28" />
+      <File FileName="Assets\PathLineMain.cs" Line="15" Column="28" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
