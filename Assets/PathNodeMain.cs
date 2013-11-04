@@ -9,6 +9,8 @@ public class PathNodeMain : MonoBehaviour {
 	List<PathNodeMain> links=new List<PathNodeMain>();
 	List<PathLineMain> path_lines=new List<PathLineMain>();
 	
+	public GameObject graphics;
+	
 	// Use this for initialization
 	void Start () {
 	
@@ -40,11 +42,22 @@ public class PathNodeMain : MonoBehaviour {
 	public void OnDestroy(){
 		for(int i=0;i<path_lines.Count;i++){
 			var l=path_lines[i];
-			if (l.CheckNode(this)){
-				path_lines.Remove(l);
+			if (l!=null&&l.CheckNode(this)){
+				
 				Destroy(l.gameObject);
 				i--;
 			}
+			path_lines.Remove(l);
+		}
+	}
+
+	public void setSelected (bool on)
+	{
+		if (on){
+			graphics.renderer.material.color=Color.green;
+		}
+		else{
+			graphics.renderer.material.color=Color.blue;
 		}
 	}
 }

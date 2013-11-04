@@ -8,6 +8,7 @@ public class GameController : MonoBehaviour {
 	
 	PathNodeMain selected_path_node;
 	UnitMain selected_unit;
+	PathNodeMain selected_node;
 	bool time_state=true;
 	
 	// Use this for initialization
@@ -24,27 +25,34 @@ public class GameController : MonoBehaviour {
 			
 			if (unit!=null){
 				SelectUnit(unit);
-				selected_unit=unit;
+				return;
 			}
-			else{
+
+			var node=RaycastPathNode();
+			
+			if (node!=null){
+				if (selected_node==node)
+					DeselectNode();
+				else
+					SelectNode(node);
+				return;
+			}
+			
+			DeselectUnit();
+		}
+		if (Input.GetMouseButtonDown(1)){
+			if (selected_unit!=null){
 				//check for ground.
 				var p=Vector3.zero;
 				
 				if (GroundPosition(out p)){					
-					if (selected_unit!=null){
-						//movement
-						
-						CreatePathNode(p+Vector3.up*0.1f);
-						if (!selected_unit.Moving){
-							selected_unit.Move(selected_path_node);
-						}
-						Debug.Log("Movecommand!");
+					//movement
+					CreatePathNode(p+Vector3.up*0.1f);
+					if (!selected_unit.Moving){
+						selected_unit.Move(selected_path_node);
 					}
 				}
 			}
-		}
-		if (Input.GetMouseButtonDown(1)){
-			DeselectUnit();
 		}
 		
 		if (Input.GetKeyDown(KeyCode.Space)){
@@ -57,6 +65,14 @@ public class GameController : MonoBehaviour {
 		RaycastHit info;
 		if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out info,500f,mask))
 			return info.collider.gameObject.GetComponent<UnitMain>();
+		return null;
+	}
+	
+	PathNodeMain RaycastPathNode(){
+		int mask=1<<LayerMask.NameToLayer("PathNode");
+		RaycastHit info;
+		if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out info,500f,mask))
+			return info.collider.gameObject.GetComponent<PathNodeMain>();
 		return null;
 	}
 	
@@ -77,11 +93,25 @@ public class GameController : MonoBehaviour {
 		selection_circle.gameObject.SetActive(true);
 		selection_circle.SetTarget(unit.gameObject);
 	}
+	
+	void SelectNode (PathNodeMain node)
+	{
+		DeselectNode();
+		selected_node=node;
+		selected_node.setSelected(true);
+	}
 
 	void DeselectUnit()
 	{
 		selected_unit=null;
 		selection_circle.gameObject.SetActive(false);
+	}
+	
+	void DeselectNode()
+	{
+		if (!selected_node) return;
+		selected_node.setSelected(false);
+		selected_node=null;
 	}
 
 	void ToggleTimeState ()
