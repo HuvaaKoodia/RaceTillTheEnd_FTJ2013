@@ -1,12 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Game\GameController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\AstarPathfindingProject\Core\AI\AIPath.cs">
     <Files>
-      <File FileName="Assets\Game\UnitMain.cs" Line="52" Column="3" />
-      <File FileName="Assets\Game\GameController.cs" Line="36" Column="9" />
-      <File FileName="Assets\Engine\NewScripts\FollowTarget.cs" Line="19" Column="19" />
-      <File FileName="Assets\PathNodeMain.cs" Line="60" Column="47" />
-      <File FileName="Assets\PathLineMain.cs" Line="15" Column="28" />
+      <File FileName="Assets\Game\Objects\UnitMain.cs" Line="79" Column="20" />
+      <File FileName="Assets\AstarPathfindingProject\Core\AstarPath.cs" Line="501" Column="3" />
+      <File FileName="Assets\AstarPathfindingProject\Editor\SeekerEditor.cs" Line="11" Column="37" />
+      <File FileName="Assets\Game\Camera\CameraZoom.cs" Line="44" Column="7" />
+      <File FileName="Assets\Game\Camera\CameraMain.cs" Line="15" Column="43" />
+      <File FileName="Assets\Game\GameController.cs" Line="78" Column="28" />
+      <File FileName="Assets\Game\PathSys\PathNodeMain.cs" Line="125" Column="25" />
+      <File FileName="Assets\AstarPathfindingProject\Core\AI\AIPath.cs" Line="202" Column="61" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
