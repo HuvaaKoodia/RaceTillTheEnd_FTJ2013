@@ -35,6 +35,8 @@ using Pathfinding;
 [RequireComponent(typeof(Seeker))]
 public class AIPath : MonoBehaviour {
 	
+	public bool ReverseDirection{get;set;}
+	
 	public delegate void OnTargetReached();
 	
 	public OnTargetReached OnTargetReachedEvent;
@@ -334,7 +336,7 @@ public class AIPath : MonoBehaviour {
 		} else if (rigid != null) {
 			rigid.AddForce (dir);
 		} else {
-			transform.Translate (dir*Time.deltaTime, Space.World);
+			transform.Translate (dir, Space.World);
 		}
 	}
 	
@@ -395,9 +397,6 @@ public class AIPath : MonoBehaviour {
 		Vector3 dir = vPath[currentWaypointIndex] - vPath[currentWaypointIndex-1];
 		Vector3 targetPosition = CalculateTargetPoint (currentPosition,vPath[currentWaypointIndex-1] , vPath[currentWaypointIndex]);
 			//vPath[currentWaypointIndex] + Vector3.ClampMagnitude (dir,forwardLook);
-		
-		
-		
 		dir = targetPosition-currentPosition;
 		dir.y = 0;
 		float targetDist = dir.magnitude;
@@ -422,11 +421,11 @@ public class AIPath : MonoBehaviour {
 		float dot = Vector3.Dot (dir.normalized,forward);
 		float sp = speed * Mathf.Max (dot,minMoveScale) * slowdown;
 		
+				
+		if (ReverseDirection)
+			forward*=-1;
 		
-		if (Time.deltaTime	> 0) {
-			sp = Mathf.Clamp (sp,0,targetDist/(Time.deltaTime*2));
-		}
-		return forward*sp;
+		return forward*sp*Time.deltaTime;
 	}
 	
 	/** Rotates in the specified direction.
@@ -437,7 +436,7 @@ public class AIPath : MonoBehaviour {
 		Quaternion rot = tr.rotation;
 		Quaternion toTarget = Quaternion.LookRotation (dir);
 		
-		rot = Quaternion.Slerp (rot,toTarget,turningSpeed*Time.fixedDeltaTime);
+		rot = Quaternion.Slerp (rot,toTarget,turningSpeed*Time.deltaTime);
 		Vector3 euler = rot.eulerAngles;
 		euler.z = 0;
 		euler.x = 0;

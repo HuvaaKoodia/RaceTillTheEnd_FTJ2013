@@ -11,7 +11,7 @@ public class UnitMain : MonoBehaviour {
 	
 	public AIPath AIPathFinder;
 	
-	public float TARGET_REACHED_DISTANCE=2;
+	public float TARGET_REACHED_DISTANCE=2.2f;
 	
 	public bool Moving{
 		get{return moving;}
@@ -20,6 +20,8 @@ public class UnitMain : MonoBehaviour {
 	public GameObject SelectionCircle;
 	public UnitGraphicsMain GraphicsMain; 
 	
+	Timer stuck_timer;
+	
 	// Use this for initialization
 	void Start () {
 		AIPathFinder.canMove=true;
@@ -27,10 +29,50 @@ public class UnitMain : MonoBehaviour {
 		SetSelected(false);
 		
 		GraphicsMain.SetColor(Subs.RandomColor());
+		
+		stuck_timer=new Timer(4000);
+		stuck_timer.Active=false;
 	}
 	
+	bool stuck=false,reverse_on=false;
+	Vector3 old_pos;
+	
 	// Update is called once per frame
-	void FixedUpdate (){}
+	void Update (){
+		
+		if (moving){			
+			stuck_timer.Update();
+			
+			if (reverse_on){
+				if (stuck_timer.Done){
+					stuck_timer.Reset(false);
+					ResetStuckSys();
+				}
+			}
+			else if (!stuck){
+				if (Vector3.Distance(transform.position,old_pos)<0.01f){
+					stuck_timer.Delay=Random.Range(3000,5000);
+					stuck_timer.Reset(true);
+					stuck=true;
+				}
+			}
+			else{
+				if (Vector3.Distance(transform.position,old_pos)>0.1){
+					ResetStuckSys();
+				}
+				
+				if (stuck_timer.Done){
+					stuck_timer.Delay=Random.Range(600,1500);
+					stuck_timer.Reset(true);
+					reverse_on=true;
+					
+					AIPathFinder.ReverseDirection=true;
+				}
+			}
+
+		}
+		old_pos=transform.position;
+	}
 	
 	public void OnTargetReached(){
 		//get next node
@@ -44,7 +86,14 @@ public class UnitMain : MonoBehaviour {
 		}
 		StopMoving();
 	}
-
+	
+	void ResetStuckSys(){
+		stuck=false;
+		reverse_on=false;
+		AIPathFinder.ReverseDirection=false;
+		stuck_timer.Reset(false);
+	}
+	
 	public void Move(Vector3 p)
 	{
 		DeselectMoveNode();
@@ -61,6 +110,7 @@ public class UnitMain : MonoBehaviour {
 	
 	public void StopMoving(){
 		moving=false;
+		ResetStuckSys();
 		
 		AIPathFinder.canSearch=false;
 		//AIPathFinder.canMove=false;
@@ -73,6 +123,8 @@ public class UnitMain : MonoBehaviour {
 		//AIPathFinder.canMove=true;
 		AIPathFinder.SetVectorTarget(move_p);
 		AIPathFinder.SearchPath();
+		
+		ResetStuckSys();
 	}
 	
 	void SelectMoveNode(PathNodeMain node){
@@ -95,7 +147,7 @@ public class UnitMain : MonoBehaviour {
 	public void SetSelected(bool selected){
 		SelectionCircle.SetActive(selected);
 	}
-	
+
 	/*
 	public void OnCollisionStay(Collision other){
 		if (other.collider.gameObject.tag=="Unit"){

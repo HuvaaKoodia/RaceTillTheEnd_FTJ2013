@@ -38,9 +38,7 @@ public class GameController : MonoBehaviour {
 		if (selection_rect_on_legit){
 			float x1=selection_rect_start_pos.x,y1=MouseYToHudY(selection_rect_start_pos.y);
 			float w=Input.mousePosition.x-x1,h=MouseYToHudY(Input.mousePosition.y)-y1;
-			DrawQuad(new Rect(x1,y1,
-				w,h),
-				new Color(0f,0f,0f,0.5f));
+			DrawQuad(new Rect(x1,y1,w,h),new Color(0f,0f,0f,0.5f));
 		}
 	}
 	
@@ -322,7 +320,7 @@ public class GameController : MonoBehaviour {
 			Time.timeScale=1;
 		}
 		else{
-			Time.timeScale=0.0000001f;
+			Time.timeScale=0;
 		}
 	}
 

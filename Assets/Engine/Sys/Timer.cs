@@ -29,18 +29,18 @@ public class Timer{
 	//object
 	public bool Active=false;
 	
-	bool over;
-	public bool OVER{
+	bool done;
+	public bool Done{
 		get{
-			if (over){
-				over=false;
+			if (done){
+				done=false;
 				return true;}
 			return false;
 		}
-		private set{over=value;}
+		private set{done=value;}
 	}
 	
-	public float Delay{get{return delay;} set{delay=value/1000;}}
+	public float Delay{get{return delay;} set{delay=value;}}
 	public float Percent{get{return tick/delay;}}
 	public float Tick{get{return tick;}}
 	public bool Destroyed{get;private set;}
@@ -66,14 +66,14 @@ public class Timer{
 	public Timer(TimerEvent te,bool addthis){
 		if (addthis) timers.Add(this);
 		Timer_Event=te;
-		OVER=false;
+		Done=false;
 	}
 	/// <summary>
 	/// Creates an active timer with a certain delay.
 	/// Addthis adds this to to the global queue.
 	/// </param>
 	public Timer(int millis,TimerEvent te,bool addthis):this(te,addthis){
-		delay=tick=millis/1000f;
+		delay=tick=millis;
 		Active=true;
 	}
 	
@@ -85,12 +85,12 @@ public class Timer{
 	
 	public void Update(float delta){
 		if (!Active) return;
-		tick-=delta;
+		tick-=delta*1000f;
 		
 		if (tick<=0){
 			if (Timer_Event!=null)
 				Timer_Event();
-			OVER=true;
+			Done=true;
 			Reset();
 		}
 	}
@@ -108,14 +108,13 @@ public class Timer{
 		Active=active;
 		tick=delay;
 	}
+	public void Reset(int millis,bool active){
+		Delay=millis;
+		Active=active;
+		tick=delay;
+	}
 	
 	public void Destroy(){
 		Destroyed=true;
-	}
-
-	public void Done ()
-	{
-		over=true;
-		Reset();
 	}
 }

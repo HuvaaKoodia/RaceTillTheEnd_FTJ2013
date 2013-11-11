@@ -98,8 +98,8 @@ public class GridGraphEditor : GraphEditor, ISerializableGraphEditor {
 		bool sizeSelected1 = false;
 		bool sizeSelected2 = false;
 		
-		int newWidth = IntField (new GUIContent ("Width (nodes)","Width of the graph in nodes"),graph.width,50,0, out lockRect, out sizeSelected1);
-		int newDepth = IntField (new GUIContent ("Depth (nodes)","Depth (or height you might also call it) of the graph in nodes"),graph.depth,50,0, out tmpLockRect, out sizeSelected2);
+		int newWidth = IntField (new GUIContent ("Width (nodes)","Width of the graph in nodes"),graph.width,100,0, out lockRect, out sizeSelected1);
+		int newDepth = IntField (new GUIContent ("Depth (nodes)","Depth (or height you might also call it) of the graph in nodes"),graph.depth,100,0, out tmpLockRect, out sizeSelected2);
 		
 		//Rect r = GUILayoutUtility.GetRect (0,0,lockStyle);
 		
