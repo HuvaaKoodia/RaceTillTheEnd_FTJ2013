@@ -10,31 +10,27 @@ public class UnitMain : MonoBehaviour {
 	public float move_speed=10;
 	
 	public AIPath AIPathFinder;
-
+	
+	public float TARGET_REACHED_DISTANCE=2;
+	
 	public bool Moving{
 		get{return moving;}
 	}
 	
+	public GameObject SelectionCircle;
+	public UnitGraphicsMain GraphicsMain; 
+	
 	// Use this for initialization
 	void Start () {
+		AIPathFinder.canMove=true;
 		AIPathFinder.OnTargetReachedEvent+=OnTargetReached;
+		SetSelected(false);
+		
+		GraphicsMain.SetColor(Subs.RandomColor());
 	}
 	
 	// Update is called once per frame
-	void FixedUpdate (){
-		/*
-		if (!stop&&moving){
-			//move_d=move_p-transform.position;
-			//move_d.Normalize();
-			//rigidbody.MovePosition(transform.position+move_d*move_speed*Time.deltaTime);
-			//if (Vector3.Distance(transform.position,move_p)<0.3f){
-			if (AIPathFinder.TargetReached){
-				
-				
-			}
-		}
-		*/
-	}
+	void FixedUpdate (){}
 	
 	public void OnTargetReached(){
 		//get next node
@@ -59,7 +55,7 @@ public class UnitMain : MonoBehaviour {
 	public void Move(PathNodeMain n)
 	{
 		Move(n.transform.position);
-		AIPathFinder.endReachedDistance=1f;
+		AIPathFinder.endReachedDistance=TARGET_REACHED_DISTANCE;
 		SelectMoveNode(n);
 	}
 	
@@ -67,14 +63,14 @@ public class UnitMain : MonoBehaviour {
 		moving=false;
 		
 		AIPathFinder.canSearch=false;
-		AIPathFinder.canMove=false;
+		//AIPathFinder.canMove=false;
 	}
 	
 	void UpdateMovePosition(Vector3 p){
 		move_p=new Vector3(p.x,transform.position.y,p.z);
 		moving=true;
 		AIPathFinder.canSearch=true;
-		AIPathFinder.canMove=true;
+		//AIPathFinder.canMove=true;
 		AIPathFinder.SetVectorTarget(move_p);
 		AIPathFinder.SearchPath();
 	}
@@ -95,6 +91,11 @@ public class UnitMain : MonoBehaviour {
 			move_node=null;
 		}
 	}
+	
+	public void SetSelected(bool selected){
+		SelectionCircle.SetActive(selected);
+	}
+	
 	/*
 	public void OnCollisionStay(Collision other){
 		if (other.collider.gameObject.tag=="Unit"){
@@ -119,5 +120,4 @@ public class UnitMain : MonoBehaviour {
 	void OnPathDestroyed(List<PathNodeMain> nodes){
 		Move(nodes[Subs.GetRandom(nodes.Count)]);
 	}
-
 }
