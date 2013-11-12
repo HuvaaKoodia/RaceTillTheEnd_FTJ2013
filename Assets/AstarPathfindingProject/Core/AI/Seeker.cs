@@ -404,6 +404,10 @@ public class Seeker : MonoBehaviour {
 		return StartPath (p, callback, graphMask);
 	}
 	
+	public Path StartPath (Path p) {
+		return StartPath(p,null,-1);
+	}
+	
 	/** Call this function to start calculating a path.
 	 * \param p			The path to start calculating
 	 * \param callback	The function to call when the path has been calculated
@@ -411,7 +415,7 @@ public class Seeker : MonoBehaviour {
 	 * 
 	 * \a callback will be called when the path has completed.
 	 * \a Callback will not be called if the path is canceled (e.g when a new path is requested before the previous one has completed) */
-	public Path StartPath (Path p, OnPathDelegate callback = null, int graphMask = -1) {
+	public Path StartPath (Path p, OnPathDelegate callback, int graphMask) {
 		p.enabledTags = traversableTags.tagsChange;
 		p.tagPenalties = tagPenalties;
 		

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class UnitMain : MonoBehaviour {
 	
+	public delegate void OnUnitDead(UnitMain unit);
+	
 	PathNodeMain move_node;
 	Vector3 move_p,move_d;
 	bool moving=false;
@@ -13,34 +15,95 @@ public class UnitMain : MonoBehaviour {
 	
 	public float TARGET_REACHED_DISTANCE=2.2f;
 	
-	public bool Moving{
-		get{return moving;}
-	}
-	
 	public GameObject SelectionCircle;
 	public UnitGraphicsMain GraphicsMain; 
 	
-	Timer stuck_timer;
+	public Color color{get;private set;}
 	
-	// Use this for initialization
+	public int MaxHP=100,DmgThreshold=2,SmokeThreshold=70;
+	
+	public OnUnitDead OnDeadEvent;
+	
+	
+	
+	
+	//stats
+	int hp;
+	
+	public bool Dead{get;private set;}
+	public void Die(){
+		
+		GraphicsMain.SetColor(Color.black);
+		GraphicsMain.DetachObject(rigidbody.velocity);
+		Destroy(gameObject);
+		if (OnDeadEvent!=null)
+			OnDeadEvent(this);
+	}
+	public int HP{
+		get{return hp;}
+		set{
+			hp=value;
+			if (hp<=0){
+				hp=0;
+				Die();
+			}
+			if (hp<=SmokeThreshold){
+				GraphicsMain.StartSmoking();
+			}
+			Debug.Log("HP: "+hp);
+		}
+	}
+	
+	public int LAPS{
+		get;private set;
+	}
+	
+	public RaceController RaceCont;
+	
+	List<CheckPointMain> lap_check_points_completed=new List<CheckPointMain>();
+	
+	void OnTriggerEnter(Collider other){
+		if (other.gameObject.tag=="Checkpoint"){
+			var cp=other.gameObject.GetComponent<CheckPointMain>();
+			
+			if (cp.IsGoal){
+				if (RaceCont.CheckLap(lap_check_points_completed)){
+					LAPS++;
+					lap_check_points_completed.Clear();
+				}
+			}
+			else{
+				if (!lap_check_points_completed.Contains(cp)){
+					lap_check_points_completed.Add(cp);
+				}
+			}
+		}
+	}
+	
+	
+	//ai stuck sys
+	Timer stuck_timer;
+	bool stuck=false,reverse_on=false;
+	Vector3 old_pos;
+	
 	void Start () {
 		AIPathFinder.canMove=true;
 		AIPathFinder.OnTargetReachedEvent+=OnTargetReached;
 		SetSelected(false);
 		
-		GraphicsMain.SetColor(Subs.RandomColor());
+		color=Subs.RandomColor();
+		GraphicsMain.SetColor(color);
 		
 		stuck_timer=new Timer(4000);
 		stuck_timer.Active=false;
+		
+		hp=MaxHP;
+		LAPS=0;
 	}
 	
-	bool stuck=false,reverse_on=false;
-	Vector3 old_pos;
-	
-	// Update is called once per frame
 	void Update (){
-		
-		if (moving){			
+		//stuck sys
+		if (moving){	
 			stuck_timer.Update();
 			
 			if (reverse_on){
@@ -148,18 +211,6 @@ public class UnitMain : MonoBehaviour {
 		SelectionCircle.SetActive(selected);
 	}
 
-	/*
-	public void OnCollisionStay(Collision other){
-		if (other.collider.gameObject.tag=="Unit"){
-			stop=true;
-		}
-	}
-	public void OnCollisionExit(Collision other){
-		if (other.collider.gameObject.tag=="Unit"){
-			stop=false;
-		}
-	}*/
-	
 	void OnPathMoved(){
 		UpdateMovePosition(move_node.transform.position);
 	}
@@ -171,5 +222,11 @@ public class UnitMain : MonoBehaviour {
 	
 	void OnPathDestroyed(List<PathNodeMain> nodes){
 		Move(nodes[Subs.GetRandom(nodes.Count)]);
+	}
+	
+	void OnCollisionEnter(Collision collision){
+		int amount=(int)(collision.relativeVelocity.magnitude*0.5f);
+		if (amount>DmgThreshold)
+			HP-=amount;
 	}
 }

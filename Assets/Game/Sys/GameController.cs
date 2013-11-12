@@ -26,22 +26,6 @@ public class GameController : MonoBehaviour {
 		DeselectUnits();
 	}
 	
-	void DrawQuad(Rect position, Color color){
-		Texture2D texture = new Texture2D(1, 1);
-	    texture.SetPixel(0,0,color);
-	    texture.Apply();
-	    GUI.skin.box.normal.background = texture;
-	    GUI.Box(position, GUIContent.none);
-	}
-
-	void OnGUI(){
-		if (selection_rect_on_legit){
-			float x1=selection_rect_start_pos.x,y1=MouseYToHudY(selection_rect_start_pos.y);
-			float w=Input.mousePosition.x-x1,h=MouseYToHudY(Input.mousePosition.y)-y1;
-			DrawQuad(new Rect(x1,y1,w,h),new Color(0f,0f,0f,0.5f));
-		}
-	}
-	
 	private void SelectUnits(Vector3 p1,Vector3 p2){
 		//List<UnitMain> list=new List<UnitMain>();
 		//p1.y=MouseYToHudY(p1.y);
@@ -133,6 +117,7 @@ public class GameController : MonoBehaviour {
 			
 			if (unit!=null){
 				SelectUnit(unit);
+				unit.HP-=10;//DEV:TEMP
 				return;
 			}
 			
@@ -165,10 +150,8 @@ public class GameController : MonoBehaviour {
 		
 		//control actions
 		if (Input.GetMouseButtonDown(1)){
-			
 			if (_controlMode==ControlMode.None){
 				if (HasSelectedUnits()){
-					
 					var node=RaycastPathNode();
 					if (node!=null){
 						foreach (var s in selected_units)
@@ -179,8 +162,7 @@ public class GameController : MonoBehaviour {
 							foreach (var s in selected_units)
 								s.Move(temp_ground_pos);
 						}
-					}
-					
+					}	
 				}
 			}
 			else
@@ -210,7 +192,8 @@ public class GameController : MonoBehaviour {
 		
 		if (Input.GetKeyDown(KeyCode.Alpha3)){
 			if (GroundPosition(out temp_ground_pos)){
-				Instantiate(Unit_prefab,temp_ground_pos+Vector3.up*2,Quaternion.identity);
+				var go=Instantiate(Unit_prefab,temp_ground_pos+Vector3.up*2,Quaternion.identity) as GameObject;
+				AddCar(go.GetComponent<UnitMain>());
 			}
 		}
 		
@@ -295,10 +278,11 @@ public class GameController : MonoBehaviour {
 
 	void DeselectUnits()
 	{
-		foreach(var s in selected_units)
-			s.SetSelected(false);
+		foreach(var s in selected_units){
+			if (!s.Dead)
+				s.SetSelected(false);
+		}
 		selected_units.Clear();
-		
 	}
 	
 	void DeselectNode()
@@ -333,5 +317,31 @@ public class GameController : MonoBehaviour {
 		}
 		
 		SelectNode(n);
+	}
+	
+	public void OnCarDead(UnitMain unit){
+		selected_units.Remove(unit);
+	}
+	
+	public void AddCar(UnitMain unit){
+		unit.OnDeadEvent+=OnCarDead;
+	}
+	
+	
+	//HUD
+	void DrawQuad(Rect position, Color color){
+		Texture2D texture = new Texture2D(1, 1);
+	    texture.SetPixel(0,0,color);
+	    texture.Apply();
+	    GUI.skin.box.normal.background = texture;
+	    GUI.Box(position, GUIContent.none);
+	}
+
+	void OnGUI(){
+		if (selection_rect_on_legit){
+			float x1=selection_rect_start_pos.x,y1=MouseYToHudY(selection_rect_start_pos.y);
+			float w=Input.mousePosition.x-x1,h=MouseYToHudY(Input.mousePosition.y)-y1;
+			DrawQuad(new Rect(x1,y1,w,h),new Color(0f,0f,0f,0.5f));
+		}
 	}
 }

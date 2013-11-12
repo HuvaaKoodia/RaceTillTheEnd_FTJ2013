@@ -35,7 +35,15 @@ using Pathfinding;
 [RequireComponent(typeof(Seeker))]
 public class AIPath : MonoBehaviour {
 	
-	public bool ReverseDirection{get;set;}
+	private bool reverse;
+	Vector3 ReverseDir;
+	public bool ReverseDirection{
+		get{return reverse;}
+		set{
+			ReverseDir=Subs.RandomBool()?Vector3.right:Vector3.left;
+			reverse=value;
+		}
+	}
 	
 	public delegate void OnTargetReached();
 	
@@ -418,14 +426,18 @@ public class AIPath : MonoBehaviour {
 		}
 		
 		Vector3 forward = tr.forward;
+		
 		float dot = Vector3.Dot (dir.normalized,forward);
 		float sp = speed * Mathf.Max (dot,minMoveScale) * slowdown;
 		
-				
-		if (ReverseDirection)
-			forward*=-1;
+		forward*=sp;
 		
-		return forward*sp*Time.deltaTime;
+		if (ReverseDirection){
+			forward+=transform.TransformDirection(ReverseDir*sp);
+			forward*=-1;
+		}
+
+		return forward*Time.deltaTime;
 	}
 	
 	/** Rotates in the specified direction.

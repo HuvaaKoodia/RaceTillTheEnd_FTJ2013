@@ -59,7 +59,7 @@ namespace Pathfinding {
 		 * \param node2 Node which should have a valid path to \a node1. All nodes should be walkable or \a false will be returned.
 		 * \param alwaysRevert If true, reverts the graphs to the old state even if no blocking ocurred
 		 */
-		public static bool UpdateGraphsNoBlock (GraphUpdateObject guo, Node node1, Node node2, bool alwaysRevert = false) {
+		public static bool UpdateGraphsNoBlock (GraphUpdateObject guo, Node node1, Node node2, bool alwaysRevert) {
 			List<Node> buffer = ListPool<Node>.Claim ();
 			buffer.Add (node1);
 			buffer.Add (node2);
@@ -67,6 +67,13 @@ namespace Pathfinding {
 			bool worked = UpdateGraphsNoBlock (guo,buffer, alwaysRevert);
 			ListPool<Node>.Release (buffer);
 			return worked;
+		}
+		
+		public static bool UpdateGraphsNoBlock (GraphUpdateObject guo, Node node1, Node node2) {
+			return UpdateGraphsNoBlock(guo,node1,node2,false);
+		}
+		public static bool UpdateGraphsNoBlock (GraphUpdateObject guo, List<Node> nodes) {
+			return UpdateGraphsNoBlock(guo,nodes,false);
 		}
 		
 		/** Updates graphs and checks if all nodes are still reachable from each other.
@@ -82,7 +89,7 @@ namespace Pathfinding {
 		 * \param nodes Nodes which should have valid paths between them. All nodes should be walkable or \a false will be returned.
 		 * \param alwaysRevert If true, reverts the graphs to the old state even if no blocking ocurred
 		 */
-		public static bool UpdateGraphsNoBlock (GraphUpdateObject guo, List<Node> nodes, bool alwaysRevert = false) {
+		public static bool UpdateGraphsNoBlock (GraphUpdateObject guo, List<Node> nodes, bool alwaysRevert) {
 			
 			//Make sure all nodes are walkable
 			for (int i=0;i<nodes.Count;i++) if (!nodes[i].walkable) return false;

@@ -2,11 +2,15 @@ using UnityEngine;
 using System.Collections;
 
 public class PS_StopOnDestroy : MonoBehaviour {
-
-	// Use this for initialization
+	public enum Stop{System,Loop}
 	public ParticleSystem PS;
-	// Update is called once per frame
+	
+	public Stop stop=Stop.System;
+	
 	void OnDestroy(){
-		PS.Stop();
+		if (stop==Stop.Loop)
+			PS.loop=false;
+		else if (stop==Stop.System)
+			PS.Stop();
 	}
 }
