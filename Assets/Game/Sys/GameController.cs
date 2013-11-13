@@ -197,7 +197,7 @@ public class GameController : MonoBehaviour {
 			}
 		}
 		
-		if (Input.GetKeyDown(KeyCode.Delete)){
+		if (Input.GetKeyDown(KeyCode.Delete)||Input.GetKeyDown(KeyCode.R)){
 			if (selected_node!=null)
 				selected_node.Delete();
 		}
