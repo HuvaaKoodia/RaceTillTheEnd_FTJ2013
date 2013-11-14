@@ -1,28 +1,40 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\AsteroidMain.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Game\Sys\GameController.cs">
     <Files>
-      <File FileName="Assets\Game\Sys\GameController.cs" Line="327" Column="2" />
-      <File FileName="Assets\Game\Objects\UnitMain.cs" Line="1" Column="1" />
-      <File FileName="Assets\Game\Objects\UnitGraphicsMain.cs" Line="1" Column="1" />
-      <File FileName="Assets\Engine\Sys\Subs.cs" Line="1" Column="1" />
-      <File FileName="Assets\MapController.cs" Line="86" Column="3" />
-      <File FileName="Assets\Engine\Sys\Timer.cs" Line="1" Column="1" />
-      <File FileName="Assets\AsteroidMain.cs" Line="40" Column="23" />
-      <File FileName="Assets\BuildingMain.cs" Line="16" Column="9" />
+      <File FileName="Assets\Game\Sys\GameController.cs" Line="25" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="Assembly-CSharp" expanded="True">
-            <Node name="AsteroidMain.cs" selected="True" />
+            <Node name="Engine" expanded="True">
+              <Node name="NotificationSys" expanded="True">
+                <Node name="Notifications" expanded="True" />
+              </Node>
+            </Node>
+            <Node name="Game" expanded="True">
+              <Node name="Objects" expanded="True" />
+              <Node name="PathSys" expanded="True" />
+              <Node name="Sys" expanded="True">
+                <Node name="GameController.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+          <Node name="Assembly-CSharp-Editor" expanded="True">
+            <Node name="AstarPathfindingProject" expanded="True">
+              <Node name="Editor" expanded="True" />
+            </Node>
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="D:\User\coding\Git\LazorSquad\Assets\Game\PathSys\PathLineMain.cs" line="62" />
+      <Breakpoint file="D:\User\coding\Git\LazorSquad\Assets\Game\Sys\GameController.cs" line="216" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

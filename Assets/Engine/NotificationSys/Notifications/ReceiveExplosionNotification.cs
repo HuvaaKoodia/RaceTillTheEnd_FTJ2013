@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using NotificationSys;
 
-public class ReceiveExplosions : MonoBehaviour {
+public class ReceiveExplosionNotification : MonoBehaviour {
 	
 	public OnNotificationDelegate onExplosion;
 	// Use this for initialization

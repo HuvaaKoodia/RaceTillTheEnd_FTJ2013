@@ -10,6 +10,7 @@ public class GameController : MonoBehaviour {
 	public GameObject Unit_prefab;
 	
 	PathNodeMain selected_node;
+	PathLineMain selected_line;
 	List<UnitMain> selected_units;
 	bool time_state=true;
 	
@@ -54,6 +55,7 @@ public class GameController : MonoBehaviour {
 			if (Subs.insideArea(new Vector2(obj_pos.x,obj_pos.y),r)){
 				//list.Add(u.GetComponent<UnitMain>());
 				AddUnit(u.GetComponent<UnitMain>());
+				SetMode(ControlMode.None);
 			}
 		}
 		//return list;
@@ -63,18 +65,16 @@ public class GameController : MonoBehaviour {
 		return Screen.height-mouse_y;
 	}
 	
-	bool mode_node=false,node_pressed=false,selection_rect_on=false,selection_rect_on_legit,moving_node=false;
+	bool mode_node=false,node_pressed=false,selection_rect_on=false,selection_rect_on_legit;
 	Vector3 selection_rect_start_pos;
 	// Update is called once per frame
 	void Update () {
 		//select
-		
 		if (Input.GetMouseButtonUp(0)){
 			mode_node=false;
 			if (node_pressed)
 				DeselectNode();
 			node_pressed=false;
-			moving_node=false;
 			
 			selection_rect_on=false;
 			if (selection_rect_on_legit){
@@ -84,7 +84,7 @@ public class GameController : MonoBehaviour {
 		}
 		
 		if (Input.GetMouseButton(0)){
-			if (mode_node){
+			if (mode_node){//moving node
 				if (GroundPosition(out temp_ground_pos)){
 					if (node_pressed){
 						if (Vector3.Distance(
@@ -93,7 +93,6 @@ public class GameController : MonoBehaviour {
 						)>1){
 							selected_node.Reposition(temp_ground_pos+temp_selection_offset);
 							node_pressed=false;
-							moving_node=true;
 						}
 					}
 					else{
@@ -102,10 +101,11 @@ public class GameController : MonoBehaviour {
 				}
 			}
 			else{
+				//start selection rectangle
 				if (!selection_rect_on_legit&&selection_rect_on){
 					if (Vector3.Distance(Input.mousePosition,selection_rect_start_pos)>10){
 						selection_rect_on_legit=true;
-						SetMode(ControlMode.None);
+
 					}
 				}
 			}
@@ -117,7 +117,9 @@ public class GameController : MonoBehaviour {
 			
 			if (unit!=null){
 				SelectUnit(unit);
-				unit.HP-=10;//DEV:TEMP
+#if DEBUG
+				unit.HP-=10;
+#endif
 				return;
 			}
 			
@@ -136,16 +138,26 @@ public class GameController : MonoBehaviour {
 					}
 					else{
 						SelectNode(node);
+						DeselectLine();
 					}
 					
 					if (GroundPosition(out temp_ground_pos))
 						temp_selection_offset=node.transform.position-temp_ground_pos;
 					return;
 				}
+
+				var line=RaycastPathLine();
+				
+				if (line!=null){
+					SetSelectedLine(line);
+					DeselectNode();
+					return;
+				}
 			}
 			
 			DeselectUnits();
 			DeselectNode();
+			DeselectLine();
 		}
 		
 		//control actions
@@ -187,7 +199,7 @@ public class GameController : MonoBehaviour {
 		}
 		
 		if (Input.GetKeyDown(KeyCode.Alpha2)){
-			SetPathNode(!(_controlMode==ControlMode.CreatePaths));
+			SetPathMode(!(_controlMode==ControlMode.CreatePaths));
 		}
 		
 		if (Input.GetKeyDown(KeyCode.Alpha3)){
@@ -200,6 +212,8 @@ public class GameController : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.Delete)||Input.GetKeyDown(KeyCode.R)){
 			if (selected_node!=null)
 				selected_node.Delete();
+			if (selected_line!=null)
+				selected_line.Delete();
 		}
 		
 		if (Input.GetKeyDown(KeyCode.Space)){
@@ -215,6 +229,14 @@ public class GameController : MonoBehaviour {
 		return null;
 	}
 	
+	PathLineMain RaycastPathLine(){
+		int mask=1<<LayerMask.NameToLayer("PathLine");
+		RaycastHit info;
+		if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out info,500f,mask))
+			return info.collider.gameObject.GetComponent<PathLineMain>();
+		return null;
+	}
+
 	PathNodeMain RaycastPathNode(){
 		int mask=1<<LayerMask.NameToLayer("PathNode");
 		RaycastHit info;
@@ -247,12 +269,28 @@ public class GameController : MonoBehaviour {
 		}
 	}
 	
-	void SetPathNode(bool on){
+	void SetPathMode(bool on){
 		if (on){
 			SetMode(ControlMode.CreatePaths);
 		}
 		else
 			SetMode(ControlMode.None);
+	}
+
+	void SetSelectedLine(PathLineMain line){
+		if (selected_line!=line){
+			DeselectLine();
+			line.SetSelected(true);
+			selected_line=line;
+		}
+		else
+			DeselectLine();
+	}
+
+	void DeselectLine(){
+		if (selected_line!=null)
+			selected_line.SetSelected(false);
+		selected_line=null;
 	}
 	
 	void SelectUnit (UnitMain unit)
@@ -326,8 +364,7 @@ public class GameController : MonoBehaviour {
 	public void AddCar(UnitMain unit){
 		unit.OnDeadEvent+=OnCarDead;
 	}
-	
-	
+
 	//HUD
 	void DrawQuad(Rect position, Color color){
 		Texture2D texture = new Texture2D(1, 1);

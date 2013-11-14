@@ -83,7 +83,7 @@ public class UnitMain : MonoBehaviour {
 	
 	//ai stuck sys
 	Timer stuck_timer;
-	bool stuck=false,reverse_on=false;
+	bool stuck=false,reverse_on=false,MovingToVector=false;
 	Vector3 old_pos;
 	
 	void Start () {
@@ -139,11 +139,16 @@ public class UnitMain : MonoBehaviour {
 	
 	public void OnTargetReached(){
 		//get next node
-		if (move_node!=null){
+		if (!move_node!=null){
+			if (MovingToVector){
+				Move(move_node);
+			}
+			else{
 			var o_n=move_node;
-			if (o_n.HasForwardNodes()){
-				Move(o_n.GetNextNode());
-				return;
+				if (o_n.HasForwardNodes()){
+					Move(o_n.GetNextNode());
+					return;
+				}
 			}
 			//Destroy(o_n.gameObject);
 		}
@@ -159,14 +164,16 @@ public class UnitMain : MonoBehaviour {
 	
 	public void Move(Vector3 p)
 	{
-		DeselectMoveNode();
-		AIPathFinder.endReachedDistance=1f;
+		MovingToVector=true;
+		//DeselectMoveNode();
+		//AIPathFinder.endReachedDistance=1f;
 		UpdateMovePosition(p);
 	}
 	
 	public void Move(PathNodeMain n)
 	{
 		Move(n.transform.position);
+		MovingToVector=false;
 		AIPathFinder.endReachedDistance=TARGET_REACHED_DISTANCE;
 		SelectMoveNode(n);
 	}

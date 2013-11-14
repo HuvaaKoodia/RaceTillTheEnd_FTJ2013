@@ -78,7 +78,7 @@ public class MapController : MonoBehaviour {
 
 		Vector3 rv=new Vector3(1,0,1)*2.5f+new Vector3(Subs.GetRandom(5f),0,Subs.GetRandom(5f));
 
-		var go=Instantiate(Obstacle_prefab,new Vector3(rx*TileSize,100,ry*TileSize)+rv,Quaternion.identity) as GameObject;
+		var go=Instantiate(Obstacle_prefab,new Vector3(rx*TileSize,170,ry*TileSize)+rv,Quaternion.identity) as GameObject;
 
 		if (obs_timer.Delay>500)
 			obs_timer.Delay-=100;

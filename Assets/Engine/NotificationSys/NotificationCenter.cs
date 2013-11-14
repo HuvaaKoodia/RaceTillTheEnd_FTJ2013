@@ -7,15 +7,21 @@ namespace NotificationSys{
 	public delegate void OnNotificationDelegate( Notification note );
 	
 	//singleton
-	public class NotificationCenter
+	public class NotificationCenter:MonoBehaviour
 	{
-	    private static NotificationCenter instance;
+		private static NotificationCenter instance;
 	    public static NotificationCenter Instance{get {return instance;}}
 	
 		private Dictionary<NotificationType,List<OnNotificationDelegate>> listeners=new Dictionary<NotificationType, List<OnNotificationDelegate>>();
-		
+
+		private List<Notification> notes=new List<Notification>();
+
+		void Awake(){
+			instance=this;
+		}
+
 		public static void resetInstance(){
-			instance=new NotificationCenter();
+			//instance=new NotificationCenter();
 		}
 		
 	    private NotificationCenter()
@@ -38,11 +44,18 @@ namespace NotificationSys{
 	
 	    public void sendNotification( Notification note )
 	    {
-	        foreach(var delegateCall in listeners[note.type] )
-	        {
-	            delegateCall( note );
-	        }
+			notes.Add(note);
 	    }
+
+		void LateUpdate(){
+			foreach (var note in notes){
+				foreach(var delegateCall in listeners[note.type] )
+				{
+					delegateCall( note );
+				}
+			}
+			notes.Clear();
+		}
 	}
 	
 	// Standard notification class.  For specific needs subclass
