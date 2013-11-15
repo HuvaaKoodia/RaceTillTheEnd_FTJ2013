@@ -23,10 +23,7 @@ public class UnitMain : MonoBehaviour {
 	public int MaxHP=100,DmgThreshold=2,SmokeThreshold=70;
 	
 	public OnUnitDead OnDeadEvent;
-	
-	
-	
-	
+
 	//stats
 	int hp;
 	
@@ -141,7 +138,8 @@ public class UnitMain : MonoBehaviour {
 		//get next node
 		if (!move_node!=null){
 			if (MovingToVector){
-				Move(move_node);
+				if (move_node!=null)
+					Move(move_node);
 			}
 			else{
 			var o_n=move_node;

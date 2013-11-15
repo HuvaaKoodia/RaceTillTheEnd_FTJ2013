@@ -1,10 +1,25 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+//map DB laxy hax
+using System.Collections.Generic;
+
+public class MapData{
+	public int[,] map_data;
+
+	public MapData(int w,int h){
+		map_data=new int[w,h];
+	}
+
+}
+
 public class MapController : MonoBehaviour {
 
+	public List<MapData> Maps=new List<MapData>();
+
 	public AstarPath AStar;
-	public GameObject Building_prefab,Obstacle_prefab;
+	public RaceController raceController;
+	public GameObject Building_prefab,Obstacle_prefab,CheckPoint_prefab;
 	public int TileSize =10,GridWidth=10,GridHeight=10;
 
 	GameObject[,] BuildingGrid;
@@ -20,6 +35,25 @@ public class MapController : MonoBehaviour {
 		PosGrid=new bool[GridWidth,GridHeight];
 
 		obs_timer=new Timer(5000);
+
+		var map=Maps[Subs.GetRandom(Maps.Count)];
+		for (int i=0;i<map.map_data.GetLength(0);i++)
+		{
+			for (int j=0;j<map.map_data.GetLength(1);j++)
+			{
+				if (map.map_data[i,j]==1){
+					AddBuilding(j,i);
+				}
+				if (map.map_data[i,j]==2){
+					AddCheckPoint(j,i);
+				}
+			}
+		}
+		var goal=raceController.CheckPoints[Subs.GetRandom(raceController.CheckPoints.Count)];
+		goal.IsGoal=true;
+		raceController.StartPos=goal;
+
+		raceController.CreateCars();
 	}
 	
 	// Update is called once per frame
@@ -99,5 +133,17 @@ public class MapController : MonoBehaviour {
 		}
 		tile=new Vector2(0,0);
 		return false;
+	}
+
+	public void AddCheckPoint (int x, int y)
+	{
+		if (PosGrid[x,y]){
+
+		}
+		else{
+
+			var go=Instantiate(CheckPoint_prefab,new Vector3(x*10,0,y*10),Quaternion.identity) as GameObject;
+			raceController.CheckPoints.Add(go.GetComponent<CheckPointMain>());
+		}
 	}
 }
