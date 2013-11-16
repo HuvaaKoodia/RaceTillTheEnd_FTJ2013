@@ -5,7 +5,7 @@ public class FollowTarget : MonoBehaviour {
 	
 	public GameObject Target;
 	public Vector3 Offset=Vector3.zero;
-	
+
 	// Use this for initialization
 	void Start () {
 		
@@ -17,6 +17,7 @@ public class FollowTarget : MonoBehaviour {
 	}
 	
 	void updatePos(){
+
 		if (Target!=null){
 			var pos=Target.transform.position+Offset;
 			transform.position=pos;
@@ -25,6 +26,7 @@ public class FollowTarget : MonoBehaviour {
 	
 	public void SetTarget(GameObject target){
 		Target=target;
+
 		updatePos();
 	}
 }

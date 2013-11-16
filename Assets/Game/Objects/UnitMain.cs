@@ -29,8 +29,10 @@ public class UnitMain : MonoBehaviour {
 	
 	public bool Dead{get;private set;}
 	public void Die(){
-		
-		GraphicsMain.SetColor(Color.black);
+
+		if (HP==0){
+			GraphicsMain.SetColor(Color.black);
+		}
 		GraphicsMain.DetachObject(rigidbody.velocity);
 		Destroy(gameObject);
 		if (OnDeadEvent!=null)
@@ -47,7 +49,6 @@ public class UnitMain : MonoBehaviour {
 			if (hp<=SmokeThreshold){
 				GraphicsMain.StartSmoking();
 			}
-			Debug.Log("HP: "+hp);
 		}
 	}
 	
@@ -99,6 +100,9 @@ public class UnitMain : MonoBehaviour {
 	}
 	
 	void Update (){
+		if (transform.position.y<-5)
+			Die();
+
 		//stuck sys
 		if (moving){	
 			stuck_timer.Update();

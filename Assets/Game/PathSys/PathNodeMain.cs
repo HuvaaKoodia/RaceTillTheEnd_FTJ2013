@@ -7,7 +7,10 @@ public class PathNodeMain : MonoBehaviour {
 	public delegate void PathNodeDestroyed(List<PathNodeMain> forward_nodes);
 	
 	public GameObject PathLine_prefab;
-	
+
+	public List<PathNodeMain> ForwardNodes {get{return forward_nodes;}}
+	public List<PathNodeMain> BackwardNodes {get{return backward_nodes;}}
+
 	List<PathNodeMain> forward_nodes=new List<PathNodeMain>();
 	List<PathNodeMain> backward_nodes=new List<PathNodeMain>();
 	List<PathLineMain> path_lines=new List<PathLineMain>();
@@ -65,6 +68,11 @@ public class PathNodeMain : MonoBehaviour {
 	public bool HasForwardNodes()
 	{
 		return forward_nodes.Count>0;
+	}
+
+	public bool HasBackwardNodes ()
+	{
+		return backward_nodes.Count>0;
 	}
 
 	public PathNodeMain GetNextNode ()

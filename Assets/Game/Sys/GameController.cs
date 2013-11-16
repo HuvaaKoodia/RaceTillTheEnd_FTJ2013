@@ -3,14 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class GameController : MonoBehaviour {
-	
+
+	bool STARTUP,GAMEOVER;
+
 	public HudMain hud_controller;
 	public MapController map_controller;
-	//public FollowTarget selection_circle;
+	public FollowTarget selection_circle;
 	public GameObject PathNode_prefab;
 	public GameObject Unit_prefab;
-
-	bool start_up;
 
 	PathNodeMain selected_node;
 	PathLineMain selected_line;
@@ -29,9 +29,11 @@ public class GameController : MonoBehaviour {
 		selected_units=new List<UnitMain>();
 		DeselectUnits();
 
-		start_up=true;
+		STARTUP=true;
 		Time.timeScale=0;
 		SetPathMode(true);
+
+		GAMEOVER=false;
 	}
 	
 	private void SelectUnits(Vector3 p1,Vector3 p2){
@@ -72,13 +74,26 @@ public class GameController : MonoBehaviour {
 		return Screen.height-mouse_y;
 	}
 	
-	bool mode_node=false,node_pressed=false,selection_rect_on=false,selection_rect_on_legit;
+	bool moving_node=false,node_pressed=false,selection_rect_on=false,selection_rect_on_legit,can_create_path;
 	Vector3 selection_rect_start_pos;
 	// Update is called once per frame
 	void Update () {
+
+		if (_controlMode==ControlMode.CreatePaths){
+			if (GroundPosition(out temp_ground_pos)){
+				selection_circle.transform.position=temp_ground_pos+Vector3.up*0.1f;
+			}
+		}
+
+		if (GAMEOVER) return;
 		//select
 		if (Input.GetMouseButtonUp(0)){
-			mode_node=false;
+
+			if (moving_node){
+				moving_node=false;
+				if (_controlMode==ControlMode.CreatePaths)
+					selection_circle.gameObject.SetActive(true);
+			}
 			if (node_pressed)
 				DeselectNode();
 			node_pressed=false;
@@ -87,11 +102,21 @@ public class GameController : MonoBehaviour {
 			if (selection_rect_on_legit){
 				SelectUnits(selection_rect_start_pos,Input.mousePosition);
 				selection_rect_on_legit=false;
+				if (_controlMode==ControlMode.CreatePaths)
+					selection_circle.gameObject.SetActive(true);
 			}
+			else
+			if (_controlMode==ControlMode.CreatePaths){
+				if (can_create_path){
+					//CreateNodeInMousePos();
+				}
+			}
+			can_create_path=false;
+
 		}
 		
 		if (Input.GetMouseButton(0)){
-			if (mode_node){//moving node
+			if (moving_node){//moving node
 				if (GroundPosition(out temp_ground_pos)){
 					if (node_pressed){
 						if (Vector3.Distance(
@@ -112,7 +137,7 @@ public class GameController : MonoBehaviour {
 				if (!selection_rect_on_legit&&selection_rect_on){
 					if (Vector3.Distance(Input.mousePosition,selection_rect_start_pos)>10){
 						selection_rect_on_legit=true;
-
+						selection_circle.gameObject.SetActive(false);
 					}
 				}
 			}
@@ -124,27 +149,38 @@ public class GameController : MonoBehaviour {
 			
 			if (unit!=null){
 				SelectUnit(unit);
-#if DEBUG
+#if UNITY_EDITOR
 				unit.HP-=10;
 #endif
 				return;
 			}
 			
-			//if (_controlMode==ControlMode.None){
+
 				selection_rect_on=true;
 				selection_rect_start_pos=Input.mousePosition;
-			//}
-			//else
+
+			if (_controlMode==ControlMode.None){
+				var node=RaycastPathNode();
+				
+				if (node!=null){
+					SetPathMode(true);
+					SetSelectedNode(node);
+					return;
+				}
+			}
+
 			if (_controlMode==ControlMode.CreatePaths){
 				var node=RaycastPathNode();
 				
 				if (node!=null){
-					mode_node=true;
+					moving_node=true;
+					selection_circle.gameObject.SetActive(false);
+
 					if (selected_node==node){
 						node_pressed=true;
 					}
 					else{
-						SelectNode(node);
+						SetSelectedNode(node);
 						DeselectLine();
 					}
 					
@@ -152,7 +188,7 @@ public class GameController : MonoBehaviour {
 						temp_selection_offset=node.transform.position-temp_ground_pos;
 					return;
 				}
-
+			
 				var line=RaycastPathLine();
 				
 				if (line!=null){
@@ -160,10 +196,12 @@ public class GameController : MonoBehaviour {
 					DeselectNode();
 					return;
 				}
+
+				can_create_path=true;
 			}
 			
 			DeselectUnits();
-			DeselectNode();
+
 			DeselectLine();
 		}
 		
@@ -186,21 +224,12 @@ public class GameController : MonoBehaviour {
 			}
 			else
 			if (_controlMode==ControlMode.CreatePaths){
-				//check for ground.
-				if (GroundPosition(out temp_ground_pos)){
-					var node=RaycastPathNode();
-					if (node!=null){
-						//link to this node
-						selected_node.AddForwardNode(node);
-					}
-					else
-						CreatePathNode(temp_ground_pos+Vector3.up*0.1f);
-				}
+				CreateNodeInMousePos();
 			}
 		}
 		
 		//other
-#if DEBUG
+#if UNITY_EDITOR
 		if (Input.GetKeyDown(KeyCode.Alpha1)){
 			SetMode(ControlMode.None);
 		}
@@ -218,12 +247,24 @@ public class GameController : MonoBehaviour {
 #endif
 
 		if (Input.GetKeyDown(KeyCode.F)){
-			SetPathMode(!(_controlMode==ControlMode.CreatePaths));
+			TogglePathMode();
 		}
 
 		if (Input.GetKeyDown(KeyCode.Delete)||Input.GetKeyDown(KeyCode.R)){
-			if (selected_node!=null)
+			if (selected_node!=null){
+				PathNodeMain node=null;
+				if (selected_node.HasForwardNodes()){
+					node=Subs.GetRandom(selected_node.ForwardNodes);
+				}
+				else{
+					if (selected_node.HasBackwardNodes()){
+						node=Subs.GetRandom(selected_node.BackwardNodes);
+					}
+				}
 				selected_node.Delete();
+				if (node!=null)
+					SetSelectedNode(node);
+			}
 			if (selected_line!=null)
 				selected_line.Delete();
 		}
@@ -232,7 +273,25 @@ public class GameController : MonoBehaviour {
 			ToggleTimeState();
 		}
 	}
-	
+
+	bool CreateNodeInMousePos(){
+		//check for ground.
+		if (GroundPosition(out temp_ground_pos)){
+			var node=RaycastPathNode();
+			if (node!=null){
+				//link to this node
+				selected_node.AddForwardNode(node);
+				SetSelectedNode(node);
+				return true;
+			}
+			else{
+				CreatePathNode(temp_ground_pos+Vector3.up*0.1f);
+				return true;
+			}
+		}
+		return false;
+	}
+
 	UnitMain RaycastUnit(){
 		int mask=1<<LayerMask.NameToLayer("Unit");
 		RaycastHit info;
@@ -276,17 +335,26 @@ public class GameController : MonoBehaviour {
 		_controlMode=mode;
 		
 		if (_controlMode==ControlMode.CreatePaths){
+			selection_circle.gameObject.SetActive(true);
 			hud_controller.SetPathMode(true);
 			DeselectUnits();
+		}
+		else{
+			selection_circle.gameObject.SetActive(false);
 		}
 	}
 	
 	void SetPathMode(bool on){
-		if (on){
+		if (on){ 
 			SetMode(ControlMode.CreatePaths);
 		}
-		else
+		else{
 			SetMode(ControlMode.None);
+		}
+	}
+
+	void TogglePathMode(){
+		SetPathMode(!(_controlMode==ControlMode.CreatePaths));
 	}
 
 	void SetSelectedLine(PathLineMain line){
@@ -319,7 +387,7 @@ public class GameController : MonoBehaviour {
 		unit.SetSelected(true);
 	}
 	
-	void SelectNode (PathNodeMain node)
+	void SetSelectedNode (PathNodeMain node)
 	{
 		DeselectNode();
 		selected_node=node;
@@ -349,7 +417,7 @@ public class GameController : MonoBehaviour {
 	
 	void ToggleTimeState ()
 	{
-		if (start_up) return;
+		if (STARTUP) return;
 		time_state=!time_state;
 		if (time_state){
 			Time.timeScale=1;
@@ -367,21 +435,30 @@ public class GameController : MonoBehaviour {
 			selected_node.AddForwardNode(n);
 		}
 		
-		SelectNode(n);
+		SetSelectedNode(n);
 	}
 	
 	public void OnCarDead(UnitMain unit){
 		selected_units.Remove(unit);
 
-		if (GameObject.FindGameObjectsWithTag("Unit").Length==0){
+		if (GameObject.FindGameObjectsWithTag("Unit").Length==1){
 			SetGameover();
 		}
 
 	}
 
 	void StartGame(){
+
+		STARTUP=false;
+		Time.timeScale=1;
+		
+		hud_controller.HideStartUpMenu();
+		map_controller.StartActionMode();
+
 		var cars=GameObject.FindGameObjectsWithTag("Unit");
 		var nodes=GameObject.FindGameObjectsWithTag("PathNode");
+
+		if (nodes.Length==0) return;
 
 		foreach (var car in cars){
 
@@ -397,11 +474,12 @@ public class GameController : MonoBehaviour {
 			var u=car.GetComponent<UnitMain>();
 			var p=go.GetComponent<PathNodeMain>();
 
+			Debug.Log("u "+u);
+			Debug.Log("p "+p);
+
 			u.Move(p);
 		}
-		start_up=false;
 
-		hud_controller.HideStartUpMenu();
 	}
 
 	void SetGameover(){

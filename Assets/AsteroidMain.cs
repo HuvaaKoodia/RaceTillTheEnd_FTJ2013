@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using NotificationSys;
 
 public class AsteroidMain : MonoBehaviour {
 
@@ -32,10 +33,12 @@ public class AsteroidMain : MonoBehaviour {
 		foreach (var unit in o){
 			float dis=Vector3.Distance(transform.position,unit.transform.position);
 			float dmg=(explosion_radius-Vector3.Distance(transform.position,unit.transform.position))/explosion_radius*100;
-			unit.GetComponent<Rigidbody>().AddExplosionForce(4000,transform.position,explosion_radius);
+			//unit.GetComponent<Rigidbody>().AddExplosionForce(4000,transform.position,explosion_radius);
 			unit.GetComponent<UnitMain>().HP-=(int)dmg;
 
 		}
+
+		NotificationCenter.Instance.sendNotification(new Explosion_note(transform.position,4000,explosion_radius));
 
 		Destroy(gameObject);
 

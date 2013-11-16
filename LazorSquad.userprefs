@@ -1,29 +1,41 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Game\Sys\GameController.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="d:\User\coding\Git\LazorSquad\Assets\AstarPathfindingProject\Editor\AstarPathEditor.cs">
     <Files>
-      <File FileName="Assets\Game\Sys\GameController.cs" Line="398" Column="1" />
+      <File FileName="Assets\Game\Sys\GameController.cs" Line="260" Column="33" />
+      <File FileName="Assets\Game\Hud\HudMain.cs" Line="32" Column="7" />
+      <File FileName="Assets\MapController.cs" Line="1" Column="1" />
+      <File FileName="Assets\AsteroidMain.cs" Line="1" Column="1" />
+      <File FileName="Assets\Game\Sys\RaceController.cs" Line="1" Column="1" />
+      <File FileName="Assets\Game\Objects\UnitMain.cs" Line="48" Column="5" />
+      <File FileName="Assets\Game\PathSys\PathNodeMain.cs" Line="12" Column="71" />
+      <File FileName="d:\User\coding\Git\LazorSquad\Assets\AstarPathfindingProject\Editor\AstarPathEditor.cs" Line="1828" Column="50" />
+      <File FileName="Assets\BuildingMain.cs" Line="26" Column="5" />
+      <File FileName="Assets\Game\Objects\UnitGraphicsMain.cs" Line="40" Column="2" />
+      <File FileName="Assets\Engine\NewScripts\FollowTarget.cs" Line="8" Column="1" />
+      <File FileName="Assets\Engine\Scripts\Automatics\AutoRotate.cs" Line="17" Column="17" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="Assembly-CSharp" expanded="True">
             <Node name="Engine" expanded="True">
-              <Node name="Sys" expanded="True" />
+              <Node name="NewScripts" expanded="True" />
+              <Node name="Scripts" expanded="True">
+                <Node name="Automatics" expanded="True" />
+              </Node>
             </Node>
             <Node name="Game" expanded="True">
               <Node name="Hud" expanded="True" />
               <Node name="Objects" expanded="True" />
               <Node name="PathSys" expanded="True" />
-              <Node name="Sys" expanded="True">
-                <Node name="GameController.cs" selected="True" />
-              </Node>
+              <Node name="Sys" expanded="True" />
             </Node>
           </Node>
           <Node name="Assembly-CSharp-Editor" expanded="True">
             <Node name="AstarPathfindingProject" expanded="True">
               <Node name="Editor" expanded="True">
-                <Node name="GraphEditors" expanded="True" />
+                <Node name="AstarPathEditor.cs" selected="True" />
               </Node>
             </Node>
           </Node>
@@ -34,8 +46,6 @@
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="D:\User\coding\Git\LazorSquad\Assets\Game\PathSys\PathLineMain.cs" line="127" />
-      <Breakpoint file="D:\User\coding\Git\LazorSquad\Assets\Game\PathSys\PathNodeMain.cs" line="32" />
-      <Breakpoint file="D:\User\coding\Git\LazorSquad\Assets\Game\PathSys\PathNodeMain.cs" line="33" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

@@ -22,7 +22,7 @@ public class BuildingMain : MonoBehaviour {
 
 		Destroy(gameObject);
 
-		NotificationSys.NotificationCenter.Instance.sendNotification(
-			new Explosion_note(GraphicsT.position,1000000,10));
+		//NotificationSys.NotificationCenter.Instance.sendNotification(
+		//	new Explosion_note(GraphicsT.position,1000000,10));
 	}
 }

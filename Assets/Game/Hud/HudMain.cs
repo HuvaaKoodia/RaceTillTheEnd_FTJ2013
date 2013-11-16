@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 public class HudMain : MonoBehaviour {
 
-	public GameObject PathMode_label,Gameover_panel,StartUpPanel;
-	public UILabel Points_label;
+	public GameObject Gameover_panel,StartUpPanel;
+	public UILabel Points_label,PathMode_label;
 
 	public List<CarHudMain> CarHuds=new List<CarHudMain>();
 	
@@ -27,7 +27,10 @@ public class HudMain : MonoBehaviour {
 	}
 
 	public void SetPathMode(bool on){
-		PathMode_label.SetActive(on);	
+		if (on)
+			PathMode_label.text="ON";
+		else
+			PathMode_label.text="OFF";
 	}
 
 	IEnumerator Fade() {

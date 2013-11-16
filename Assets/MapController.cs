@@ -181,6 +181,10 @@ public class MapController : MonoBehaviour {
 		return false;
 	}
 
+	public void StartActionMode() {
+		ActionModeStarted=true;
+	}
+
 	public void AddCheckPoint (int x, int y)
 	{
 		if (PosGrid[x,y]){

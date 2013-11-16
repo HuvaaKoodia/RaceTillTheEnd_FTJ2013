@@ -6,6 +6,7 @@ public class AutoRotate : MonoBehaviour {
 	
 	public Vector3 speed;
 	public Space space=Space.World;
+	public bool UseDeltatime=true;
 	// Use this for initialization
 	void Start () {
 	
@@ -13,6 +14,9 @@ public class AutoRotate : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		transform.Rotate(speed*Time.deltaTime,space);
+		float dt=0.01f;
+		if (UseDeltatime)
+			dt=Time.deltaTime;
+		transform.Rotate(speed*dt,space);
 	}
 }
