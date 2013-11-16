@@ -81,7 +81,7 @@ public class Subs{
 			return min+b;
 		return max+b;
 	}
-	
+
 	/// <summary>
 	/// Adds and wraps the specified number according to min and max.
 	/// Max exclusive.

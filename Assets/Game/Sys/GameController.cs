@@ -5,10 +5,13 @@ using System.Collections.Generic;
 public class GameController : MonoBehaviour {
 	
 	public HudMain hud_controller;
+	public MapController map_controller;
 	//public FollowTarget selection_circle;
 	public GameObject PathNode_prefab;
 	public GameObject Unit_prefab;
-	
+
+	bool start_up;
+
 	PathNodeMain selected_node;
 	PathLineMain selected_line;
 	List<UnitMain> selected_units;
@@ -25,6 +28,10 @@ public class GameController : MonoBehaviour {
 		hud_controller.SetPathMode(false);
 		selected_units=new List<UnitMain>();
 		DeselectUnits();
+
+		start_up=true;
+		Time.timeScale=0;
+		SetPathMode(true);
 	}
 	
 	private void SelectUnits(Vector3 p1,Vector3 p2){
@@ -193,13 +200,9 @@ public class GameController : MonoBehaviour {
 		}
 		
 		//other
-		
+#if DEBUG
 		if (Input.GetKeyDown(KeyCode.Alpha1)){
 			SetMode(ControlMode.None);
-		}
-		
-		if (Input.GetKeyDown(KeyCode.Alpha2)){
-			SetPathMode(!(_controlMode==ControlMode.CreatePaths));
 		}
 		
 		if (Input.GetKeyDown(KeyCode.Alpha3)){
@@ -208,7 +211,16 @@ public class GameController : MonoBehaviour {
 				AddCar(go.GetComponent<UnitMain>());
 			}
 		}
-		
+
+		if (Input.GetKeyDown(KeyCode.Alpha4)){
+			SetGameover();
+		}
+#endif
+
+		if (Input.GetKeyDown(KeyCode.F)){
+			SetPathMode(!(_controlMode==ControlMode.CreatePaths));
+		}
+
 		if (Input.GetKeyDown(KeyCode.Delete)||Input.GetKeyDown(KeyCode.R)){
 			if (selected_node!=null)
 				selected_node.Delete();
@@ -337,6 +349,7 @@ public class GameController : MonoBehaviour {
 	
 	void ToggleTimeState ()
 	{
+		if (start_up) return;
 		time_state=!time_state;
 		if (time_state){
 			Time.timeScale=1;
@@ -359,6 +372,43 @@ public class GameController : MonoBehaviour {
 	
 	public void OnCarDead(UnitMain unit){
 		selected_units.Remove(unit);
+
+		if (GameObject.FindGameObjectsWithTag("Unit").Length==0){
+			SetGameover();
+		}
+
+	}
+
+	void StartGame(){
+		var cars=GameObject.FindGameObjectsWithTag("Unit");
+		var nodes=GameObject.FindGameObjectsWithTag("PathNode");
+
+		foreach (var car in cars){
+
+			GameObject go=null;
+			float min=1000000000;
+			foreach (var node in nodes){
+				var dis=Vector3.Distance(car.transform.position,node.transform.position);
+				if (dis<min){
+					min=dis;
+					go=node;
+				}
+			}
+			var u=car.GetComponent<UnitMain>();
+			var p=go.GetComponent<PathNodeMain>();
+
+			u.Move(p);
+		}
+		start_up=false;
+
+		hud_controller.HideStartUpMenu();
+	}
+
+	void SetGameover(){
+		int points=0;
+		foreach (var car in hud_controller.CarHuds)
+			points+=car.LAPS;
+		hud_controller.SetGameover(points);
 	}
 	
 	public void AddCar(UnitMain unit){

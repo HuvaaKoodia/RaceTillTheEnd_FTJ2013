@@ -1,20 +1,29 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Engine\Sys\XMLsys.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Game\Sys\GameController.cs">
     <Files>
-      <File FileName="Assets\Engine\Sys\XMLsys.cs" Line="20" Column="5" />
-      <File FileName="Assets\MapController.cs" Line="1" Column="1" />
-      <File FileName="Assets\Game\Sys\RaceController.cs" Line="20" Column="18" />
-      <File FileName="c:\Users\kat12silkkah\Documents\GitHub\LazorSquad\Assets\AstarPathfindingProject\Editor\AstarPathEditor.cs" Line="1" Column="1" />
-      <File FileName="Assets\Game\Objects\UnitMain.cs" Line="1" Column="1" />
+      <File FileName="Assets\Game\Sys\GameController.cs" Line="398" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="Assembly-CSharp" expanded="True">
             <Node name="Engine" expanded="True">
+              <Node name="Sys" expanded="True" />
+            </Node>
+            <Node name="Game" expanded="True">
+              <Node name="Hud" expanded="True" />
+              <Node name="Objects" expanded="True" />
+              <Node name="PathSys" expanded="True" />
               <Node name="Sys" expanded="True">
-                <Node name="XMLsys.cs" selected="True" />
+                <Node name="GameController.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+          <Node name="Assembly-CSharp-Editor" expanded="True">
+            <Node name="AstarPathfindingProject" expanded="True">
+              <Node name="Editor" expanded="True">
+                <Node name="GraphEditors" expanded="True" />
               </Node>
             </Node>
           </Node>
@@ -24,8 +33,9 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="D:\User\coding\Git\LazorSquad\Assets\Game\PathSys\PathLineMain.cs" line="62" />
-      <Breakpoint file="D:\User\coding\Git\LazorSquad\Assets\Game\Sys\GameController.cs" line="216" />
+      <Breakpoint file="D:\User\coding\Git\LazorSquad\Assets\Game\PathSys\PathLineMain.cs" line="127" />
+      <Breakpoint file="D:\User\coding\Git\LazorSquad\Assets\Game\PathSys\PathNodeMain.cs" line="32" />
+      <Breakpoint file="D:\User\coding\Git\LazorSquad\Assets\Game\PathSys\PathNodeMain.cs" line="33" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

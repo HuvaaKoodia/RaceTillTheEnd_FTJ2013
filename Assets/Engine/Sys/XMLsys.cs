@@ -40,19 +40,19 @@ public class XMLsys : MonoBehaviour {
 			foreach (XmlNode node in root){
 				if (node.Name=="Map"){
 
-					var map=new MapData(10,10);
+					var map=new MapData(5,5);
 
 					var spl=node.InnerText.Replace(" ","").Replace("\r","").Split('\n');
 					int i=0,j=0;
 					foreach (var line in spl){
 						if (line=="") continue;
-						while (j<10){
-							var ss=line.Substring(j);
-							if (ss.StartsWith("X")){
+						while (j<map.map_data.GetLength(1)){
+							var ss=line.Substring(j).ToLower();
+							if (ss.StartsWith("x")){
 								map.map_data[i,j]=1;
 								j++;
 							}
-							else if (ss.StartsWith("C")){
+							else if (ss.StartsWith("c")){
 								map.map_data[i,j]=2;
 								j++;
 							}

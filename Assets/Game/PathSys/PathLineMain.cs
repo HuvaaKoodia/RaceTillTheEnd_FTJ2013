@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class PathLineMain : MonoBehaviour {
@@ -60,5 +60,6 @@ public class PathLineMain : MonoBehaviour {
 	public void Delete ()
 	{
 		n1.RemoveForwardNode(n2);
+		n2.RemoveBackwardNode(n1);
 	}
 }

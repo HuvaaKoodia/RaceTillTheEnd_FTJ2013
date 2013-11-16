@@ -37,7 +37,7 @@ public class RaceController : MonoBehaviour {
 	public void CreateCars(){
 		for (int i=0;i<4;i++){
 			var Corner=StartPos.transform.position;
-			var pos=new Vector3(0.25f+0.5f*i,0.2f,0.25f+(i%2)*0.5f)*5;
+			var pos=new Vector3(0.25f+0.5f*i,0.2f,0.75f+(i%2)*0.5f)*5;
 			var car=Instantiate(GameCont.Unit_prefab,Corner+pos,Quaternion.AngleAxis(-90,Vector3.up)) as GameObject;
 			var unit=car.GetComponent<UnitMain>();
 			
