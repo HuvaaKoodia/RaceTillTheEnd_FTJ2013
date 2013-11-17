@@ -104,6 +104,8 @@ public class MapController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+#if UNITY_EDITOR
 		if (Input.GetKeyDown(KeyCode.B)){
 			Vector2 pos=Vector3.zero;
 			if (GetMouseTilePos(out pos)){
@@ -126,7 +128,7 @@ public class MapController : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.X)){
 			AStar.Scan();
 		}
-
+#endif
 		if (ActionModeStarted){
 			obs_timer.Update();
 
@@ -147,7 +149,8 @@ public class MapController : MonoBehaviour {
 		else{
 			PosGrid[x,y]=true;
 
-			var go=Instantiate(Building_prefab,new Vector3(x*10,0,y*10),Quaternion.identity) as GameObject;
+			Quaternion rot=Quaternion.AngleAxis(Random.Range(-10,10),Vector3.up);
+			var go=Instantiate(Building_prefab,new Vector3(x*10,0,y*10),rot) as GameObject;
 			BuildingGrid[x,y]=go;
 		}
 	}

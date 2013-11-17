@@ -85,9 +85,22 @@ public class GameController : MonoBehaviour {
 			}
 		}
 
-		if (GAMEOVER) return;
+		if (Input.GetKeyDown(KeyCode.Escape)){
+			Application.LoadLevel("MenuScene");
+		}
+
+		if (GAMEOVER){
+
+
+
+			if (Input.GetKeyDown(KeyCode.R)){
+				Application.LoadLevel("GameScene");
+			}
+
+			return;
+		}
 		//select
-		if (Input.GetMouseButtonUp(0)){
+		if (Input.GetButtonUp("Select")){
 
 			if (moving_node){
 				moving_node=false;
@@ -115,7 +128,7 @@ public class GameController : MonoBehaviour {
 
 		}
 		
-		if (Input.GetMouseButton(0)){
+		if (Input.GetButton("Select")){
 			if (moving_node){//moving node
 				if (GroundPosition(out temp_ground_pos)){
 					if (node_pressed){
@@ -143,7 +156,7 @@ public class GameController : MonoBehaviour {
 			}
 		}
 		
-		if (Input.GetMouseButtonDown(0)){
+		if (Input.GetButtonDown("Select")){
 			//check for units
 			var unit=RaycastUnit();
 			
@@ -206,7 +219,7 @@ public class GameController : MonoBehaviour {
 		}
 		
 		//control actions
-		if (Input.GetMouseButtonDown(1)){
+		if (Input.GetButtonDown("Command")){
 			if (_controlMode==ControlMode.None){
 				if (HasSelectedUnits()){
 					var node=RaycastPathNode();
@@ -246,11 +259,11 @@ public class GameController : MonoBehaviour {
 		}
 #endif
 
-		if (Input.GetKeyDown(KeyCode.F)){
+		if (Input.GetButtonDown("PathMode")){
 			TogglePathMode();
 		}
 
-		if (Input.GetKeyDown(KeyCode.Delete)||Input.GetKeyDown(KeyCode.R)){
+		if (Input.GetButtonDown("Remove")){
 			if (selected_node!=null){
 				PathNodeMain node=null;
 				if (selected_node.HasForwardNodes()){
@@ -483,6 +496,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	void SetGameover(){
+		GAMEOVER=true;
 		int points=0;
 		foreach (var car in hud_controller.CarHuds)
 			points+=car.LAPS;

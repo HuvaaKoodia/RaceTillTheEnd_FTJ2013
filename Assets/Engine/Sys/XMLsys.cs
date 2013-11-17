@@ -23,6 +23,56 @@ public class XMLsys : MonoBehaviour {
 	//game logic
 	void readXML(){
 
+#if UNITY_WEBPLAYER
+		string url = Application.dataPath + "/Maps.xml";
+		Debug.LogError("Loading Data path: "+Application.dataPath + "/Maps.xml");
+		WWW request = new WWW(url);
+
+		while(!request.isDone) {
+			Debug.LogError("Loading Data");
+		}
+
+		var Xdoc=new XmlDocument();
+		Xdoc.LoadXml(request.text);
+		
+		//read xml
+		
+		var root=Xdoc["Root"];
+		
+		foreach (XmlNode node in root){
+			if (node.Name=="Map"){
+				var map=new MapData(5,5);
+				
+				var spl=node.InnerText.Replace(" ","").Replace("\r","").Split('\n');
+				int i=0,j=0;
+				foreach (var line in spl){
+					if (line=="") continue;
+					while (j<map.map_data.GetLength(1)){
+						var ss=line.Substring(j).ToLower();
+						if (ss.StartsWith("x")){
+							map.map_data[i,j]=1;
+							j++;
+						}
+						else if (ss.StartsWith("c")){
+							map.map_data[i,j]=2;
+							j++;
+						}
+						else 
+							j++;
+					}
+					i++;
+					j=0;
+				}
+				
+				
+				map_db.Maps.Add(map);
+			}
+		}
+	
+
+#elif UNITY_STANDALONE
+
+
 		checkFolder("Data/Maps");
 
 		var files=Directory.GetFiles("Data/Maps");
@@ -39,7 +89,6 @@ public class XMLsys : MonoBehaviour {
 
 			foreach (XmlNode node in root){
 				if (node.Name=="Map"){
-
 					var map=new MapData(5,5);
 
 					var spl=node.InnerText.Replace(" ","").Replace("\r","").Split('\n');
@@ -68,7 +117,7 @@ public class XMLsys : MonoBehaviour {
 				}
 			}
 		}
-		
+#endif
 	}
 	
 	void writeXML(){

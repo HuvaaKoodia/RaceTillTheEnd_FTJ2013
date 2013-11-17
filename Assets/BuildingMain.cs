@@ -8,9 +8,6 @@ public class BuildingMain : MonoBehaviour {
 
 	void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.G)){
-			Destroy();
-		}
 	}
 
 	public void Destroy(){

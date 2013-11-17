@@ -1,42 +1,34 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="d:\User\coding\Git\LazorSquad\Assets\AstarPathfindingProject\Editor\AstarPathEditor.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Engine\Sys\XMLsys.cs">
     <Files>
-      <File FileName="Assets\Game\Sys\GameController.cs" Line="260" Column="33" />
-      <File FileName="Assets\Game\Hud\HudMain.cs" Line="32" Column="7" />
+      <File FileName="Assets\BuildingMain.cs" Line="10" Column="3" />
+      <File FileName="Assets\Game\Camera\CameraMain.cs" Line="1" Column="1" />
+      <File FileName="Assets\MenuHudController.cs" Line="11" Column="54" />
+      <File FileName="Assets\Game\Sys\GameController.cs" Line="1" Column="1" />
+      <File FileName="Assets\Game\Hud\HudMain.cs" Line="1" Column="1" />
+      <File FileName="Assets\Auto_camera_move.cs" Line="1" Column="1" />
       <File FileName="Assets\MapController.cs" Line="1" Column="1" />
-      <File FileName="Assets\AsteroidMain.cs" Line="1" Column="1" />
-      <File FileName="Assets\Game\Sys\RaceController.cs" Line="1" Column="1" />
-      <File FileName="Assets\Game\Objects\UnitMain.cs" Line="48" Column="5" />
-      <File FileName="Assets\Game\PathSys\PathNodeMain.cs" Line="12" Column="71" />
-      <File FileName="d:\User\coding\Git\LazorSquad\Assets\AstarPathfindingProject\Editor\AstarPathEditor.cs" Line="1828" Column="50" />
-      <File FileName="Assets\BuildingMain.cs" Line="26" Column="5" />
-      <File FileName="Assets\Game\Objects\UnitGraphicsMain.cs" Line="40" Column="2" />
-      <File FileName="Assets\Engine\NewScripts\FollowTarget.cs" Line="8" Column="1" />
-      <File FileName="Assets\Engine\Scripts\Automatics\AutoRotate.cs" Line="17" Column="17" />
+      <File FileName="Assets\Game\Camera\CameraZoom.cs" Line="1" Column="1" />
+      <File FileName="d:\User\coding\Git\LazorSquad\Assets\AstarPathfindingProject\Editor\AstarPathEditor.cs" Line="1825" Column="3" />
+      <File FileName="Assets\Engine\Scripts\Automatics\AutoDestroyTimer.cs" Line="1" Column="1" />
+      <File FileName="Assets\GibDestroyer.cs" Line="1" Column="1" />
+      <File FileName="Assets\Engine\NotificationSys\Notifications\ReceiveExplosionNotification.cs" Line="1" Column="1" />
+      <File FileName="Assets\Engine\Sys\XMLsys.cs" Line="32" Column="35" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="Assembly-CSharp" expanded="True">
             <Node name="Engine" expanded="True">
-              <Node name="NewScripts" expanded="True" />
-              <Node name="Scripts" expanded="True">
-                <Node name="Automatics" expanded="True" />
+              <Node name="Sys" expanded="True">
+                <Node name="XMLsys.cs" selected="True" />
               </Node>
-            </Node>
-            <Node name="Game" expanded="True">
-              <Node name="Hud" expanded="True" />
-              <Node name="Objects" expanded="True" />
-              <Node name="PathSys" expanded="True" />
-              <Node name="Sys" expanded="True" />
             </Node>
           </Node>
           <Node name="Assembly-CSharp-Editor" expanded="True">
             <Node name="AstarPathfindingProject" expanded="True">
-              <Node name="Editor" expanded="True">
-                <Node name="AstarPathEditor.cs" selected="True" />
-              </Node>
+              <Node name="Editor" expanded="True" />
             </Node>
           </Node>
         </State>

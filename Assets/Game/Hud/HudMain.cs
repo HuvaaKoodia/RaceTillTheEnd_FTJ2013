@@ -21,7 +21,7 @@ public class HudMain : MonoBehaviour {
 
 	public void SetGameover(int points){
 		Gameover_panel.SetActive(true);
-		Points_label.text="You got "+points+" points.";
+		Points_label.text="You finished "+points+" laps.";
 		StartCoroutine(Fade());
 
 	}
