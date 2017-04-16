@@ -1,44 +1,12 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Engine\Sys\XMLsys.cs">
+  <MonoDevelop.Ide.Workspace />
+  <MonoDevelop.Ide.Workbench ActiveDocument="..\ISR2013JAM\Assets\Engine\Scripts\NGUI\ButtonPressedScr1.cs">
     <Files>
-      <File FileName="Assets\BuildingMain.cs" Line="10" Column="3" />
-      <File FileName="Assets\Game\Camera\CameraMain.cs" Line="1" Column="1" />
-      <File FileName="Assets\MenuHudController.cs" Line="11" Column="54" />
-      <File FileName="Assets\Game\Sys\GameController.cs" Line="1" Column="1" />
-      <File FileName="Assets\Game\Hud\HudMain.cs" Line="1" Column="1" />
-      <File FileName="Assets\Auto_camera_move.cs" Line="1" Column="1" />
-      <File FileName="Assets\MapController.cs" Line="1" Column="1" />
-      <File FileName="Assets\Game\Camera\CameraZoom.cs" Line="1" Column="1" />
-      <File FileName="d:\User\coding\Git\LazorSquad\Assets\AstarPathfindingProject\Editor\AstarPathEditor.cs" Line="1825" Column="3" />
-      <File FileName="Assets\Engine\Scripts\Automatics\AutoDestroyTimer.cs" Line="1" Column="1" />
-      <File FileName="Assets\GibDestroyer.cs" Line="1" Column="1" />
-      <File FileName="Assets\Engine\NotificationSys\Notifications\ReceiveExplosionNotification.cs" Line="1" Column="1" />
-      <File FileName="Assets\Engine\Sys\XMLsys.cs" Line="32" Column="35" />
+      <File FileName="..\ISR2013JAM\Assets\Engine\Scripts\NGUI\ButtonPressedScr1.cs" Line="1" Column="1" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State expanded="True">
-          <Node name="Assembly-CSharp" expanded="True">
-            <Node name="Engine" expanded="True">
-              <Node name="Sys" expanded="True">
-                <Node name="XMLsys.cs" selected="True" />
-              </Node>
-            </Node>
-          </Node>
-          <Node name="Assembly-CSharp-Editor" expanded="True">
-            <Node name="AstarPathfindingProject" expanded="True">
-              <Node name="Editor" expanded="True" />
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="D:\User\coding\Git\LazorSquad\Assets\Game\PathSys\PathLineMain.cs" line="127" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

@@ -8,7 +8,6 @@ public class MenuHudController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Time.timeScale=1;
-		Debug.LogError("Data path: "+Application.dataPath);
 	}
 	
 	// Update is called once per frame
